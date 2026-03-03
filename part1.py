@@ -6,7 +6,7 @@ import os
 
 root = tk.Tk()
 root.title("GeeckJack")
-root.geometry("900x600")
+root.geometry("700x300")
 
 notebook = ttk.Notebook(root)
 notebook.pack(fill="both", expand=True)
