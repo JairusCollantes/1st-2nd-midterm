@@ -5,7 +5,7 @@ import os
 
 
 root = tk.Tk()
-root.title("Online Shop Management System")
+root.title("GeeckJack")
 root.geometry("900x600")
 
 notebook = ttk.Notebook(root)
