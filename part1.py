@@ -119,14 +119,38 @@ def add_order():
     append_to_csv("orders.csv", data)
     read_csv("orders.csv", order_listbox)
     messagebox.showinfo("Success", "Order Created")
+def delete_selected(filename, listbox):
+    selected = listbox.curselection()
+    
+    if not selected:
+        messagebox.showwarning("Warning", "No item selected")
+        return
+
+    index = selected[0]
+    listbox.delete(index)
+
+    # Rewrite CSV without deleted row
+    with open(filename, "r") as file:
+        rows = list(csv.reader(file))
+
+    rows.pop(index)
+
+    with open(filename, "w", newline="") as file:
+        writer = csv.writer(file)
+        writer.writerows(rows)
+
+    messagebox.showinfo("Success", "Record Deleted")
 
 tk.Button(products_tab, text="Add Product", command=add_product).grid(row=5, column=1, pady=10)
 tk.Button(products_tab, text="Refresh", command=lambda: read_csv("products.csv", product_listbox)).grid(row=6, column=1)
+tk.Button(products_tab, text="Delete Selected", command=lambda: delete_selected("products.csv", product_listbox)).grid(row=7, column=1)
 
 tk.Button(customers_tab, text="Add Customer", command=add_customer).grid(row=4, column=1, pady=10)
 tk.Button(customers_tab, text="Refresh", command=lambda: read_csv("customers.csv", customer_listbox)).grid(row=5, column=1)
+tk.Button(customers_tab, text="Delete Selected",command=lambda: delete_selected("customers.csv", customer_listbox)).grid(row=6, column=1)
 
 tk.Button(orders_tab, text="Create Order", command=add_order).grid(row=5, column=1, pady=10)
 tk.Button(orders_tab, text="Refresh", command=lambda: read_csv("orders.csv", order_listbox)).grid(row=6, column=1)
+tk.Button(orders_tab, text="Delete Selected",command=lambda: delete_selected("orders.csv", order_listbox)).grid(row=7, column=1)
 
 root.mainloop()
