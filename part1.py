@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import ttk, messagebox
 import csv
 import os
-
+import random
 
 root = tk.Tk()
 root.title("GeeckJack")
