@@ -154,3 +154,16 @@ tk.Button(orders_tab, text="Refresh", command=lambda: read_csv("orders.csv", ord
 tk.Button(orders_tab, text="Delete Selected",command=lambda: delete_selected("orders.csv", order_listbox)).grid(row=7, column=1)
 
 root.mainloop()
+
+# list = []
+# datetoremove
+# with opem.. r 
+#     reader = csv.reader
+#     for row in reader
+#         list.append(row)
+#         for c in row:
+#             if c == datetoremove:
+#                 list.remove(row)
+# with open w
+#     write = csv.writer
+#     write.writerows(list)
