@@ -199,6 +199,39 @@ class Shop:
     def add_order(self):
         order_id = self.generate_id("P", "products.csv")
         
+        with open("products.csv", mode='r') as file:
+            reader = csv.reader(file)
+            next(reader)
+            for row in reader:
+                if row[0] == self.order_product_entry.get(): 
+                    product_exists = True
+                    stock = int(row[3]) 
+                    quantity = int(self.order_quantity_entry.get())
+                    if quantity > stock:
+                        tk.messagebox.showerror("Error", "Not enough stock!")
+                        return 
+                    else:
+                        row[3] = str(stock - quantity)
+                        break
+        
+        with open("products.csv", mode='w', newline='') as file:
+            writer = csv.writer(file)
+            writer.writerow(["Product ID", "Name", "Price", "Stock"])
+            with open("products.csv", mode='r') as read_file:
+                reader = csv.reader(read_file)
+                next(reader)
+                for row in reader:
+                    writer.writerow(row)
+        
+        with open("customers.csv", mode='r') as file:
+            reader = csv.reader(file)
+            next(reader)
+            for row in reader:
+                if row[0] == self.order_customer_entry.get():
+                    customer_exists = True
+                    break
+        if not customer_exists or not product_exists:
+            return
         data = [
             order_id,
             self.order_customer_entry.get(),
