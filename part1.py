@@ -9,9 +9,12 @@ class Shop:
         self.root = root
         self.root.title("Geeckjack")
         self.root.geometry("700x300")
+        self.root.configure(bg = "#ff8aec")#??
         
         self.initialize_csv_files()
         self.setup_ui()
+        
+        self.read_csv("products.csv", self.product_listbox)
     
     def create_if_not_found_csv(self, filename, headers):
         try:
