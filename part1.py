@@ -72,12 +72,15 @@ class Shop:
     def setup_customers_tab(self):
         tk.Label(self.customers_tab, text="Name").grid(row=1, column=0, padx=10, pady=5)
         tk.Label(self.customers_tab, text="Contact").grid(row=2, column=0, padx=10, pady=5)
+        tk.Label(self.customers_tab, text="Search").grid(row=3, column=0, padx=10, pady=5)
 
         self.customer_name_entry = tk.Entry(self.customers_tab)
         self.customer_contact_entry = tk.Entry(self.customers_tab)
+        self.customer_search_entry = tk.Entry(self.customers_tab)
 
         self.customer_name_entry.grid(row=1, column=1)
         self.customer_contact_entry.grid(row=2, column=1)
+        self.customer_search_entry.grid(row=3, column=1)
 
         self.customer_listbox = tk.Listbox(self.customers_tab, width=60)
         self.customer_listbox.grid(row=0, column=3, rowspan=8, padx=20)
@@ -85,28 +88,31 @@ class Shop:
         tk.Button(self.customers_tab, text="Add Customer", command=self.add_customer).grid(row=4, column=1, pady=10)
         tk.Button(self.customers_tab, text="Refresh", command=lambda: self.read_csv("customers.csv", self.customer_listbox)).grid(row=5, column=1)
         tk.Button(self.customers_tab, text="Delete Selected",command=lambda: self.delete_selected("customers.csv", self.customer_listbox)).grid(row=6, column=1)
+        tk.Button(self.customers_tab, text="Search", command=lambda: self.search("customers.csv", self.customer_search_entry.get(), self.customer_listbox)).grid(row=7, column=1, pady=10)
     
     def setup_orders_tab(self):
-
         tk.Label(self.orders_tab, text="Customer ID").grid(row=1, column=0, padx=10, pady=5)
         tk.Label(self.orders_tab, text="Product ID").grid(row=2, column=0, padx=10, pady=5)
         tk.Label(self.orders_tab, text="Quantity").grid(row=3, column=0, padx=10, pady=5)
+        tk.Label(self.orders_tab, text="Search").grid(row=4, column=0, padx=10, pady=5)
 
         self.order_customer_entry = tk.Entry(self.orders_tab)
         self.order_product_entry = tk.Entry(self.orders_tab)
         self.order_quantity_entry = tk.Entry(self.orders_tab)
+        self.order_search_entry = tk.Entry(self.orders_tab)
 
         self.order_customer_entry.grid(row=1, column=1)
         self.order_product_entry.grid(row=2, column=1)
         self.order_quantity_entry.grid(row=3, column=1)
+        self.order_search_entry.grid(row=4, column=1)
 
         self.order_listbox = tk.Listbox(self.orders_tab, width=60)
         self.order_listbox.grid(row=0, column=3, rowspan=8, padx=20)
 
-
         tk.Button(self.orders_tab, text="Create Order", command=self.add_order).grid(row=5, column=1, pady=10)
         tk.Button(self.orders_tab, text="Refresh", command=lambda: self.read_csv("orders.csv", self.order_listbox)).grid(row=6, column=1)
         tk.Button(self.orders_tab, text="Delete Selected",command=lambda: self.delete_selected("orders.csv", self.order_listbox)).grid(row=7, column=1)
+        tk.Button(self.orders_tab, text="Search", command=lambda: self.search("orders.csv", self.order_search_entry.get(), self.order_listbox)).grid(row=8, column=1, pady=10)
 
     def generate_id(self, prefix, filename):
         existing = set()
