@@ -49,14 +49,17 @@ class Shop:
         tk.Label(self.products_tab, text="Name").grid(row=1, column=0, padx=10, pady=5)
         tk.Label(self.products_tab, text="Price").grid(row=2, column=0, padx=10, pady=5)
         tk.Label(self.products_tab, text="Stock").grid(row=3, column=0, padx=10, pady=5)
+        tk.Label(self.products_tab, text="Search").grid(row=4, column=0, padx=10, pady=5)
 
         self.product_name_entry = tk.Entry(self.products_tab)
         self.product_price_entry = tk.Entry(self.products_tab)
         self.product_stock_entry = tk.Entry(self.products_tab)
+        self.product_search_entry = tk.Entry(self.products_tab)
 
         self.product_name_entry.grid(row=1, column=1)
         self.product_price_entry.grid(row=2, column=1)
         self.product_stock_entry.grid(row=3, column=1)
+        self.product_search_entry.grid(row=4, column=1)
 
         self.product_listbox = tk.Listbox(self.products_tab, width=60)
         self.product_listbox.grid(row=0, column=3, rowspan=8, padx=20)
@@ -64,6 +67,7 @@ class Shop:
         tk.Button(self.products_tab, text="Add Product", command=self.add_product).grid(row=5, column=1, pady=10)
         tk.Button(self.products_tab, text="Refresh", command=lambda: self.read_csv("products.csv", self.product_listbox)).grid(row=6, column=1)
         tk.Button(self.products_tab, text="Delete Selected", command=lambda: self.delete_selected("products.csv", self.product_listbox)).grid(row=7, column=1)
+        tk.Button(self.products_tab, text="Search", command=lambda: self.search("products.csv", self.product_search_entry.get(), self.product_listbox)).grid(row=8, column=1, pady=10)
         
     def setup_customers_tab(self):
         tk.Label(self.customers_tab, text="Name").grid(row=1, column=0, padx=10, pady=5)
@@ -148,6 +152,18 @@ class Shop:
             for i, line in enumerate(lines):
                 if i != index:
                     file.write(line)
+                    
+    def search(self, filename, word, listbox):
+        listbox.delete(0, tk.END)
+        try:
+            with open(filename, mode='r') as file:
+                reader = csv.reader(file)
+                next(reader)
+                for row in reader:
+                    if word.lower() in ", ".join(row).lower():
+                        listbox.insert(tk.END, ", ".join(row))
+        except FileNotFoundError:
+            pass
     
     def add_product(self):
         
