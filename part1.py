@@ -150,14 +150,15 @@ class Shop:
         selected = listbox.curselection()
         if not selected:
             return
-        index = selected[0]
-        listbox.delete(index)
+        selected_text = listbox.get(selected[0])
+        selected_id = selected_text.split(", ")[0]
         with open(filename, mode='r') as file:
-            lines = file.readlines()
-        with open(filename, mode='w') as file:
-            for i, line in enumerate(lines):
-                if i != index:
-                    file.write(line)
+            reader = csv.reader(file)
+            rows = [row for row in reader if row[0] != selected_id]
+        with open(filename, mode='w', newline='') as file:
+            writer = csv.writer(file)
+            writer.writerows(rows)
+        self.read_csv(filename, listbox)
                     
     def search(self, filename, word, listbox):
         listbox.delete(0, tk.END)
@@ -198,11 +199,11 @@ class Shop:
     
     def add_order(self):
         order_id = self.generate_id("P", "products.csv")
-        
+        l = []
         with open("products.csv", mode='r') as file:
             reader = csv.reader(file)
-            next(reader)
             for row in reader:
+                l.append(row)
                 if row[0] == self.order_product_entry.get(): 
                     product_exists = True
                     stock = int(row[3]) 
@@ -212,16 +213,10 @@ class Shop:
                         return 
                     else:
                         row[3] = str(stock - quantity)
-                        break
         
         with open("products.csv", mode='w', newline='') as file:
             writer = csv.writer(file)
-            writer.writerow(["Product ID", "Name", "Price", "Stock"])
-            with open("products.csv", mode='r') as read_file:
-                reader = csv.reader(read_file)
-                next(reader)
-                for row in reader:
-                    writer.writerow(row)
+            writer.writerows(l)
         
         with open("customers.csv", mode='r') as file:
             reader = csv.reader(file)
